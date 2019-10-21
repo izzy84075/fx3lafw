@@ -18,7 +18,7 @@ static const struct __attribute__((packed)) {
   .device_class = 0xff,
   .sub_class = 0xff,
   .protocol = 0xff,
-  .max_packet_size = 9 /* 2^9 */,
+  .max_packet_size = 64 /* 2^9 */,
   .vendor = 0x04b4,
   .product = 0x00f3,
   .dev_version = 0x0001,
