@@ -156,7 +156,7 @@ static const struct __attribute__((packed)) {
   .one = 1,
   .compatibleID = "WINUSB\x0000",
   .subCompatibleID = { 0 },
-}
+};
 
 static const uint16_t * const string_descriptors[] = {
   [0] = u"\x0304" "\x0409", /* US english only */
