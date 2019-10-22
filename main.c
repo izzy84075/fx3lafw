@@ -24,7 +24,7 @@ static void VendorCommand(uint8_t request_type, uint8_t request, uint16_t value,
   switch(request) {
   case 0x00:
     if(index == 0x0004) {
-      const uint8_t* descr = &microsoftCompatibleIDDescriptor;
+      const uint8_t* descr = GetDescriptor(FX3_USB_DESCRIPTOR_OS_FEATURE, 0);
       uint16_t len = 40;
       if(len < length) {
         length = len;

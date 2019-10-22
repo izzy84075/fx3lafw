@@ -189,6 +189,9 @@ const void *GetDescriptor(uint8_t descriptor_type, uint8_t descriptor_no)
     if (descriptor_no == 0)
       return &bos_descriptor;
     break;
+  case FX3_USB_DESCRIPTOR_OS_FEATURE:
+    return &microsoftCompatibleIDDescriptor;
+    break;
   }
   return NULL;
 }
