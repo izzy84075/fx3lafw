@@ -18,6 +18,8 @@
 
 static volatile uint8_t DmaBuf[32] __attribute__((aligned(32)));
 
+static volatile uint8_t temp[32] __attribute__((aligned(32)));
+
 static void VendorCommand(uint8_t request_type, uint8_t request, uint16_t value,
 			  uint16_t index, uint16_t length)
 {
@@ -104,7 +106,6 @@ static void SetupData(uint8_t request_type, uint8_t request, uint16_t value,
 		      uint16_t index, uint16_t length)
 {
   char buf[64];
-  uint8_t temp[2] = { 0 };
   snprintf(buf, sizeof(buf),
 	   "req: %02x %02x value: %04x index: %04x length: %04x\n",
 	   (unsigned)request_type, (unsigned)request,
