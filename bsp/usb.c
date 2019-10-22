@@ -241,7 +241,7 @@ static void Fx3UsbUsbCoreIsr(void)
   uint32_t req = Fx3ReadReg32(FX3_UIB_INTR) & Fx3ReadReg32(FX3_UIB_INTR_MASK);
   Fx3WriteReg32(FX3_UIB_INTR, req);
 
-  Fx3UartTxString("Fx3UsbUsbCoreIsr\n");
+  //Fx3UartTxString("Fx3UsbUsbCoreIsr\n");
   if (req & FX3_UIB_INTR_PROT_INT) {
     Fx3UartTxString("  PROT\n");
     uint32_t prot_req =
@@ -301,7 +301,7 @@ static void Fx3UsbUsbCoreIsr(void)
     }
   }
   if (req & FX3_UIB_INTR_LNK_INT) {
-    Fx3UartTxString("  LNK\n");
+    //Fx3UartTxString("  LNK\n");
     uint32_t lnk_req =
       Fx3ReadReg32(FX3_LNK_INTR) & Fx3ReadReg32(FX3_LNK_INTR_MASK);
     Fx3WriteReg32(FX3_LNK_INTR, lnk_req);
@@ -320,7 +320,7 @@ static void Fx3UsbUsbCoreIsr(void)
       Fx3UartTxString("    LGO_U3\n");
     }
     if (lnk_req & FX3_LNK_INTR_LTSSM_STATE_CHG) {
-      Fx3UartTxString("    LTSSM_STATE_CHG %u\n");
+      //Fx3UartTxString("    LTSSM_STATE_CHG %u\n");
     }
   }
   if (req & FX3_UIB_INTR_DEV_CTL_INT) {
