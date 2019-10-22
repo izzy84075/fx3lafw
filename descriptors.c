@@ -18,7 +18,7 @@ static const struct __attribute__((packed)) {
   .device_class = 0xff,
   .sub_class = 0xff,
   .protocol = 0xff,
-  .max_packet_size = 9 /* 2^9 */,
+  .max_packet_size = 10 /* 2^9 */,
   .vendor = 0x04b4,
   .product = 0x00f3,
   .dev_version = 0x0001,
@@ -138,9 +138,9 @@ static const struct __attribute__((packed)) {
 
 static const uint16_t * const string_descriptors[] = {
   [0] = u"\x0304" "\x0409", /* US english only */
-  [1] = u"\x0308" "sigrok",
-  [2] = u"\x0309" "fx3lafw",
-  [3] = u"\x030a" "12345678",
+  [1] = u"\x030e" "sigrok",
+  [2] = u"\x0310" "fx3lafw",
+  [3] = u"\x0312" "12345678",
 };
 
 const void *GetDescriptor(uint8_t descriptor_type, uint8_t descriptor_no)
