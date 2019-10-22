@@ -18,7 +18,7 @@ static const struct __attribute__((packed)) {
   .device_class = 0xff,
   .sub_class = 0xff,
   .protocol = 0xff,
-  .max_packet_size = 10 /* 2^9 */,
+  .max_packet_size = 0x09 /* 2^9 */,
   .vendor = 0x04b4,
   .product = 0x00f3,
   .dev_version = 0x0001,
@@ -136,11 +136,34 @@ static const struct __attribute__((packed)) {
    },
 };
 
+static const struct __attribute__((packed)) {
+  uint32_t length;
+  uint16_t version;
+  uint16_t compatibilityIDIndex;
+  uint8_t numSections;
+  uint8_t blank[7];
+  uint8_t interfaceNum;
+  uint8_t one;
+  uint8_t compatibleID[8];
+  uint8_t subCompatibleID[8];
+  uint8_t blank3[6];
+} microsoftCompatibleIDDescriptor = {
+  .length = sizeof(microsoftCompatibleIDDescriptor),
+  .version = "\x0100",
+  .compatibilityIDIndex = 0x0004,
+  .numSections = 1,
+  .interfaceNum = 0,
+  .one = 1,
+  .compatibleID = "WINUSB\x0000",
+  .subCompatibleID = { 0 },
+}
+
 static const uint16_t * const string_descriptors[] = {
   [0] = u"\x0304" "\x0409", /* US english only */
   [1] = u"\x030e" "sigrok",
   [2] = u"\x0310" "fx3lafw",
   [3] = u"\x0312" "12345678",
+  [4] = u"\x0312" "MSFT100\x0000",
 };
 
 const void *GetDescriptor(uint8_t descriptor_type, uint8_t descriptor_no)
@@ -155,8 +178,12 @@ const void *GetDescriptor(uint8_t descriptor_type, uint8_t descriptor_no)
       return &superspeed_configuration_descriptor;
     break;
   case FX3_USB_DESCRIPTOR_STRING:
-    if (descriptor_no < sizeof(string_descriptors)/sizeof(string_descriptors[0]))
+    if (descriptor_no < (sizeof(string_descriptors)/sizeof(string_descriptors[0]))-1 ) {
       return string_descriptors[descriptor_no];
+    }
+    if (descriptor_no == 0xEE) {
+      return string_descriptors[4];
+    }
     break;
   case FX3_USB_DESCRIPTOR_BOS:
     if (descriptor_no == 0)

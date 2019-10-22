@@ -22,6 +22,17 @@ static void VendorCommand(uint8_t request_type, uint8_t request, uint16_t value,
 			  uint16_t index, uint16_t length)
 {
   switch(request) {
+  case 0x00:
+    if(index == 0x0004) {
+      const uint8_t* descr = &microsoftCompatibleIDDescriptor;
+      uint16_t len = 40;
+      if(len < length) {
+        length = len;
+      }
+      Fx3UsbUnstallEp0();
+      Fx3UsbDmaDataIn(0, descr, length);
+    }
+    return;
   case CMD_START:
     if (request_type !=
 	(FX3_USB_REQTYPE_OUT | FX3_USB_REQTYPE_TYPE_VENDOR | FX3_USB_REQTYPE_TGT_DEVICE))
