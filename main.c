@@ -18,8 +18,6 @@
 
 static volatile uint8_t DmaBuf[32] __attribute__((aligned(32)));
 
-static volatile uint8_t temp[32] __attribute__((aligned(32)));
-
 static void VendorCommand(uint8_t request_type, uint8_t request, uint16_t value,
 			  uint16_t index, uint16_t length)
 {
@@ -92,7 +90,7 @@ static void VendorCommand(uint8_t request_type, uint8_t request, uint16_t value,
     if (value != 0 || index != 0 || length != 1)
       goto stall;
     Fx3UartTxString("CMD_GET_REVID_VERSION\n");
-    DmaBuf[0] = 1;
+    DmaBuf[0] = 0xFF;
     Fx3CacheCleanDCacheEntry(DmaBuf);
     Fx3UsbUnstallEp0();
     Fx3UsbDmaDataIn(0, DmaBuf, 1);
@@ -125,13 +123,17 @@ static void SetupData(uint8_t request_type, uint8_t request, uint16_t value,
     Fx3UartTxString("USB_STD_GET_STATUS\n");
     if(request_type == (FX3_USB_REQTYPE_IN | FX3_USB_REQTYPE_TYPE_STD | FX3_USB_REQTYPE_TGT_DEVICE) ) {
       Fx3UartTxString("USB_STD_GET_STATUS_DEVICE\n");
+      DmaBuf[0] = 0;
+      DmaBuf[1] = 0;
       Fx3UsbUnstallEp0();
-      Fx3UsbDmaDataIn(0, temp, 2);
+      Fx3UsbDmaDataIn(0, DmaBuf, 2);
     } else if(request_type == (FX3_USB_REQTYPE_IN | FX3_USB_REQTYPE_TYPE_STD | FX3_USB_REQTYPE_TGT_EP) ) {
       if(index == 0 || index == 2) {
         Fx3UartTxString("USB_STD_GET_STATUS_EP\n");
+        DmaBuf[0] = 0;
+        DmaBuf[1] = 0;
         Fx3UsbUnstallEp0();
-        Fx3UsbDmaDataIn(0, temp, 2);
+        Fx3UsbDmaDataIn(0, DmaBuf, 2);
       } else {
         goto stall;
       }
