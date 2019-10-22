@@ -119,6 +119,20 @@ static void SetupData(uint8_t request_type, uint8_t request, uint16_t value,
     goto stall;
 
   switch(request) {
+  case FX3_USB_STD_REQUEST_GET_STATUS:
+    uint8_t temp[2] = { 0 };
+    if(request_type & FX3_USB_REQTYPE_TGT_DEVICE) {
+      Fx3UsbUnstallEp0();
+      Fx3UsbDmaDataIn(0, temp, 2);
+    } else if(requestType & FX3_USB_REQTYPE_TGT_EP) {
+      if(index == 0 || index == 2) {
+        Fx3UsbUnstallEp0();
+        Fx3UsbDmaDataIn(0, temp, 2);
+      }
+    } else {
+      goto stall;
+    }
+    return;
   case FX3_USB_STD_REQUEST_GET_DESCRIPTOR:
     if (request_type !=
 	(FX3_USB_REQTYPE_IN | FX3_USB_REQTYPE_TYPE_STD | FX3_USB_REQTYPE_TGT_DEVICE))
