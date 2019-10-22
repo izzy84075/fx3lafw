@@ -149,7 +149,7 @@ static const struct __attribute__((packed)) {
   uint8_t blank3[6];
 } microsoftCompatibleIDDescriptor = {
   .length = sizeof(microsoftCompatibleIDDescriptor),
-  .version = "\x0100",
+  .version = 0x0100,
   .compatibilityIDIndex = 0x0004,
   .numSections = 1,
   .interfaceNum = 0,
